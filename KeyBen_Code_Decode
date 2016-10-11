@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 10 20:43:30 2016
+
+@author: Sergey
+"""
+
+
+# Include imports separately into the final code!!!
+
+def KeyGen(n_length):
+    #There is no sense in using small prime numers!!! Moreover it doesn't seem to be robust for small n_length!!
+    assert(n_length > 100)
+    
+    # Include imports separately into the final code!!!
+    from Crypto.Util import number
+    import random
+    
+    prime1 = number.getPrime(n_length)
+    prime2 = number.getPrime(n_length)
+    
+    n = prime1 * prime2
+
+    g = n + 1
+    phi = (prime1 - 1) * (prime2 - 1)
+    lambd = phi
+    mu = number.inverse(phi, n)
+    
+    
+    return (n , g, lambd, mu)
+    
+def encode((n,g),m):
+    # Include imports separately into the final code!!!
+    import random
+    a = m % n
+    r = random.randrange (1, n, 1)
+    N = n * n
+    c = (pow(g,m,N))*(pow(r,n,N)) % N
+    return c
+
+def decode((lambd, mu), c):
+    
+    N = n * n
+    message = (((pow(c,lambd,N) - 1)/n) * mu) % n 
+    return message
